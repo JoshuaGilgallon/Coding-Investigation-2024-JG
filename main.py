@@ -15,7 +15,8 @@ def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clear
     try:
         answer = int(answer)
     except:
-        cls()
+        if clearPrior == 1:
+            cls()
         print(f'{errorMsg}\n')
         return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior)
     else:
@@ -25,7 +26,8 @@ def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clear
             if lowVal < answer < highVal:
                 return answer
             else:
-                cls()
+                if clearPrior == 1:
+                    cls()
                 print(f'{errorMsg}\n')
                 return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior)
 
@@ -43,11 +45,12 @@ def menuBar():
     module_functions[module]()
 
 def moduleOne():
+    priorMsgAsFormat = 'Module 1: Compare Simple and Compound Interest Accounts \n' \
+                        'Simple interest account:\n'
     cls()
-    print('Module 1: Compare Simple and Compound Interest Accounts \n')
-    print('Simple interest account:')
-    principleAmount = input('Enter the principle amount: ')
-    checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount: ', 'x')
+    principleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount: ', priorMsgAsFormat, 1)
+    priorMsgAsFormat = f'{priorMsgAsFormat}\n{principleAmount}'
+    
 
 def moduleTwo():
     pass
