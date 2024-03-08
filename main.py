@@ -30,6 +30,18 @@ def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clear
                     cls()
                 print(f'{errorMsg}\n')
                 return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior)
+            
+def checkTimeFormat(question, errorMsg, priorMsg, clearPrior):
+    # set clearPrior to 0 if clearing output is not necessary, or 1 if it is.
+    validTimes = ['year', 'quarter', 'month', 'week', 'day']
+    timeFormat = input(question).lower()
+    if timeFormat in validTimes:
+        return timeFormat
+    else:
+        if clearPrior == 1:
+            cls()
+        print(f'{errorMsg}\n')
+        return checkTimeFormat(question, errorMsg, priorMsg, clearPrior)
 
 def menuBar():
     module = checkInt(0, 7, '>> Please select a valid option.', 'Select an option: ',
@@ -49,6 +61,12 @@ def moduleOne():
     cls()
     principleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount: ', priorMsgAsFormat, 1)
     priorMsgAsFormat = f'{priorMsgAsFormat}\n{principleAmount}'
+    interestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
+                                           '>> Please enter a valid time unit\n',
+                                           priorMsgAsFormat, 1)
+    priorMsgAsFormat = f'{priorMsgAsFormat}\n{interestRateTimeUnit}'
+
+    print('\nCompound interest account: \n')
 
     
 
