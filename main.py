@@ -31,9 +31,12 @@ def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clear
                 print(f'{errorMsg}\n')
                 return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior)
             
-def checkTimeFormat(question, errorMsg, priorMsg, clearPrior):
+def checkTimeFormat(question: str, errorMsg: str, priorMsg: str, clearPrior: int, customOption: int):
     # set clearPrior to 0 if clearing output is not necessary, or 1 if it is.
+    # set customOption to 1 if it is required, otherwise 0.
     validTimes = ['year', 'quarter', 'month', 'week', 'day']
+    if customOption == 1:
+        validTimes.append('custom')
     timeFormat = input(question).lower()
     if timeFormat in validTimes:
         return timeFormat
@@ -41,7 +44,7 @@ def checkTimeFormat(question, errorMsg, priorMsg, clearPrior):
         if clearPrior == 1:
             cls()
         print(f'{errorMsg}\n')
-        return checkTimeFormat(question, errorMsg, priorMsg, clearPrior)
+        return checkTimeFormat(question, errorMsg, priorMsg, clearPrior, customOption)
 
 def menuBar():
     module = checkInt(0, 7, '>> Please select a valid option.', 'Select an option: ',
@@ -57,15 +60,47 @@ def menuBar():
 
 def moduleOne():
     cls()
-    priorMsgAsFormat = 'Module 1: Compare Simple and Compound Interest Accounts \n' \
-                        '\nSimple interest account:\n'
-    principleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount: ', priorMsgAsFormat, 1)
-    interestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
+    print('Module 1: Compare Simple and Compound Interest Accounts \n' \
+        '\nSimple interest account:\n')
+    siPrincipleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 1)
+    siInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
+    siInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
                                            '\n>> Please enter a valid time unit',
-                                           'x', 0)
+                                           'x', 0, 0)
+    
     print('\nCompound interest account: \n')
+    ciPrincipleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 0)
+    ciInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
+    ciInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
+                                           '\n>> Please enter a valid time unit',
+                                           'x', 0, 0)
+    ciCompoundingTimeUnit = checkTimeFormat('Enter the compunding period time unit (year, quarter, month, week, day, custom): ', 
+                                           '\n>> Please enter a valid time unit',
+                                           'x', 0, 1)
+    if ciCompoundingTimeUnit.lower() == 'custom':
+        ciCompoundingTimeUnit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0)
+    
+    print('\nFuture projecting timeframe\n')
+    timeIntoFuture = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the amount of time to project into the future: ', 'x', 0)
+    projectionUnit = checkTimeFormat('Enter the projection time unit (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
 
     
+    cls()
+    print(
+
+f'Summary:\n \
+- Simple Interest:\n \
+  > Principle Amount: {siPrincipleAmount}\n \
+  > Interest Rate: {siInterestRate}% per {siInterestRateTimeUnit}\n \
+- Compound Interest:\n \
+  > Principle Amount: {ciPrincipleAmount}\n \
+  > Interest Rate: {ciInterestRate}% per {ciInterestRateTimeUnit}\n \
+  > Compounding Frequency: {ciCompoundingTimeUnit}'
+            
+         )
+
+
+
 
 def moduleTwo():
     pass
