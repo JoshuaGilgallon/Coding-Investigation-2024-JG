@@ -56,16 +56,13 @@ def menuBar():
     module_functions[module]()
 
 def moduleOne():
+    cls()
     priorMsgAsFormat = 'Module 1: Compare Simple and Compound Interest Accounts \n' \
                         '\nSimple interest account:\n'
-    cls()
     principleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount: ', priorMsgAsFormat, 1)
-    priorMsgAsFormat = f'{priorMsgAsFormat}\n{principleAmount}'
     interestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
-                                           '>> Please enter a valid time unit\n',
-                                           priorMsgAsFormat, 1)
-    priorMsgAsFormat = f'{priorMsgAsFormat}\n{interestRateTimeUnit}'
-
+                                           '\n>> Please enter a valid time unit',
+                                           'x', 0)
     print('\nCompound interest account: \n')
 
     
