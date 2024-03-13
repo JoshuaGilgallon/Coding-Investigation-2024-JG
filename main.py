@@ -84,6 +84,11 @@ def moduleOne():
     timeIntoFuture = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the amount of time to project into the future: ', 'x', 0)
     projectionUnit = checkTimeFormat('Enter the projection time unit (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
 
+    siProjectedAmount = siPrincipleAmount * (1 + siInterestRate / 100 * timeIntoFuture)
+    siInterestEarned = siProjectedAmount - siPrincipleAmount
+
+    ciProjectedAmount = ciPrincipleAmount * (1 + ciInterestRate / 100 / ciCompoundingTimeUnit) ** (ciCompoundingTimeUnit * timeIntoFuture)
+    ciInterestEarned = ciProjectedAmount - ciPrincipleAmount
     
     cls()
     print(
@@ -95,9 +100,16 @@ f'Summary:\n \
 - Compound Interest:\n \
   > Principle Amount: {ciPrincipleAmount}\n \
   > Interest Rate: {ciInterestRate}% per {ciInterestRateTimeUnit}\n \
-  > Compounding Frequency: {ciCompoundingTimeUnit}'
-            
+  > Compounding Frequency: {ciCompoundingTimeUnit} 
+- Projection Timeframe: {timeIntoFuture} {projectionUnit}s'            
+         
          )
+    
+    print(
+        f'SI Account projected amount: ${siProjectedAmount:.2f}, Interest earned: ${siInterestEarned:.2f}\n'
+        f'CI Account projected amount: ${ciProjectedAmount:.2f}, Interest earned: ${ciInterestEarned:.2f}'
+    )
+
 
 
 
