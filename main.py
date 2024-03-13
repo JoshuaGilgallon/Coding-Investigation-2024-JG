@@ -77,8 +77,18 @@ def moduleOne():
     ciCompoundingTimeUnit = checkTimeFormat('Enter the compunding period time unit (year, quarter, month, week, day, custom): ', 
                                            '\n>> Please enter a valid time unit',
                                            'x', 0, 1)
+    
     if ciCompoundingTimeUnit.lower() == 'custom':
         ciCompoundingTimeUnit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0)
+    else:
+        ciCompoundingMap = {'custom': checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0),
+                      'day': 1,
+                      'year': 1,
+                      'quarter': 4,
+                      'month': 12,
+                      'week': 52}
+
+        ciCompoundingTimeUnit = ciCompoundingMap.get(ciCompoundingTimeUnit.lower(), 0)
     
     print('\nFuture projecting timeframe\n')
     timeIntoFuture = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the amount of time to project into the future: ', 'x', 0)
@@ -100,7 +110,7 @@ f'Summary:\n \
 - Compound Interest:\n \
   > Principle Amount: {ciPrincipleAmount}\n \
   > Interest Rate: {ciInterestRate}% per {ciInterestRateTimeUnit}\n \
-  > Compounding Frequency: {ciCompoundingTimeUnit} 
+  > Compounding Frequency: {ciCompoundingTimeUnit}\n \
 - Projection Timeframe: {timeIntoFuture} {projectionUnit}s'            
          
          )
