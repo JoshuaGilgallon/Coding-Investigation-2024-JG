@@ -134,12 +134,29 @@ f'Summary:\n \
         f'CI Account projected amount: ${ciProjectedAmount:.2f}, Interest earned: ${ciInterestEarned:.2f}'
     )
 
-
-
-
-
 def moduleTwo():
-    pass
+    print('Module 2: Time for a Compound Interest account to reach a target amount. \n')
+    ciPrincipleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 0)
+    ciInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
+    ciInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
+                                           '\n>> Please enter a valid time unit',
+                                           'x', 0, 0)
+    ciCompoundingTimeUnit = checkTimeFormat('Enter the compounding period time unit (year, quarter, month, week, day, custom): ', 
+                                           '\n>> Please enter a valid time unit',
+                                           'x', 0, 1)
+    
+    if ciCompoundingTimeUnit.lower() == 'custom':
+        ciCompoundingTimeUnit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0)
+    else:
+        ciCompoundingMap = {'custom': checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0),
+                      'day': 1,
+                      'year': 1,
+                      'quarter': 4,
+                      'month': 12,
+                      'week': 52}
+
+        ciCompoundingTimeUnit = ciCompoundingMap.get(ciCompoundingTimeUnit.lower(), 0)
+    
 
 def moduleThree():
     pass
