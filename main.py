@@ -58,6 +58,16 @@ def menuBar():
     
     module_functions[module]()
 
+def getTimeFactor(interestRateUnit, projectionUnit):
+    timeFactors = {
+        'year': 1,
+        'quarter': 4,
+        'month': 12,
+        'week': 52,
+        'day': 365
+    }
+    return timeFactors.get(interestRateUnit.lower(), 1) / timeFactors.get(projectionUnit.lower(), 1)
+
 def moduleOne():
     cls()
     print('Module 1: Compare Simple and Compound Interest Accounts \n' \
@@ -74,7 +84,7 @@ def moduleOne():
     ciInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
                                            '\n>> Please enter a valid time unit',
                                            'x', 0, 0)
-    ciCompoundingTimeUnit = checkTimeFormat('Enter the compunding period time unit (year, quarter, month, week, day, custom): ', 
+    ciCompoundingTimeUnit = checkTimeFormat('Enter the compounding period time unit (year, quarter, month, week, day, custom): ', 
                                            '\n>> Please enter a valid time unit',
                                            'x', 0, 1)
     
@@ -94,10 +104,14 @@ def moduleOne():
     timeIntoFuture = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the amount of time to project into the future: ', 'x', 0)
     projectionUnit = checkTimeFormat('Enter the projection time unit (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
 
-    siProjectedAmount = siPrincipleAmount * (1 + siInterestRate / 100 * timeIntoFuture)
+    # Adjustments based on time units for both simple and compound interest calculations
+    siTimeFactor = getTimeFactor(siInterestRateTimeUnit, projectionUnit)
+    ciTimeFactor = getTimeFactor(ciInterestRateTimeUnit, projectionUnit)
+
+    siProjectedAmount = siPrincipleAmount * (1 + siInterestRate / 100 * siTimeFactor * timeIntoFuture)
     siInterestEarned = siProjectedAmount - siPrincipleAmount
 
-    ciProjectedAmount = ciPrincipleAmount * (1 + ciInterestRate / 100 / ciCompoundingTimeUnit) ** (ciCompoundingTimeUnit * timeIntoFuture)
+    ciProjectedAmount = ciPrincipleAmount * (1 + ciInterestRate / 100 / ciCompoundingTimeUnit) ** (ciCompoundingTimeUnit * ciTimeFactor * timeIntoFuture)
     ciInterestEarned = ciProjectedAmount - ciPrincipleAmount
     
     cls()
@@ -116,7 +130,7 @@ f'Summary:\n \
          )
     
     print(
-        f'SI Account projected amount: ${siProjectedAmount:.2f}, Interest earned: ${siInterestEarned:.2f}\n'
+        f'\nSI Account projected amount: ${siProjectedAmount:.2f}, Interest earned: ${siInterestEarned:.2f}\n'
         f'CI Account projected amount: ${ciProjectedAmount:.2f}, Interest earned: ${ciInterestEarned:.2f}'
     )
 
