@@ -14,7 +14,7 @@ def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clear
         print(priorMsg)
     answer = input(question)
     try:
-        answer = int(answer)
+        answer = float(answer)
     except:
         if clearPrior == 1:
             cls()
@@ -92,7 +92,7 @@ def moduleOne():
     if ciCompoundingTimeUnit.lower() == 'custom':
         ciCompoundingTimeUnit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0)
     else:
-        ciCompoundingMap = {'custom': checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0),
+        ciCompoundingMap = {
                       'day': 1,
                       'year': 1,
                       'quarter': 4,
@@ -178,16 +178,25 @@ def moduleTwo():
     cls()
 
     print(f'It will take approximately {time} {ciInterestRateTimeUnit}s to reach the target amount of ${targetAmount}.\n\n')
+
+    print(
+        'Summary:\n'
+        '- Compound Interest:\n'
+        f'  > Principle Amount: {ciPrincipleAmount}\n'
+        f'  > Interest Rate: {ciInterestRate}% per {ciInterestRateTimeUnit}\n'
+        f'  > Compounding Frequency: {ciCompoundingTimeUnit}\n'
+        f'  > Target Amount: {targetAmount}\n'
+    )
+
     print('Individual values over time:')
     print('-'*30)
 
     cycle = 0
     for i in timeProjections:
         cycle += 1
-        print(f'{ciInterestRateTimeUnit} {cycle}: {i}')
+        print(f'{ciInterestRateTimeUnit.capitalize()} {cycle}: {i:.2f}')
 
-    print('\n Summary:')
-
+    
 
 
 def moduleThree():
