@@ -272,6 +272,19 @@ def moduleThree():
 
         compareTimeUnit = ciCompoundingMap.get(compareTimeUnit.lower(), 0)
 
+        for time in range(1, compareTimeAmount + 1):
+            amountAcc1 = ciPrincipleAmount1 * (1 + ciInterestRate1 / 100 / compareTimeAmountUnit) ** (compareTimeAmountUnit * time)
+            amountAcc2 = ciPrincipleAmount2 * (1 + ciInterestRate2 / 100 / compareTimeAmountUnit) ** (compareTimeAmountUnit * time)
+
+        timeProjectionsAcc1.append(amountAcc1)
+        timeProjectionsAcc2.append(amountAcc2)
+
+        print('\nComparison over time:')
+        print('A1 = Account 1 and A2 = Account 2')
+        print('-' * 30)
+
+        for i in range(compareTimeAmount):
+            print(f'Time {i + 1}: A1: {timeProjectionsAcc1[i]:.2f}, A2: {timeProjectionsAcc2[i]:.2f}')
 
 
     else:
