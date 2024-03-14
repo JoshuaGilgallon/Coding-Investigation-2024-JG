@@ -69,17 +69,7 @@ def getTimeFactor(interestRateUnit, projectionUnit):
     }
     return timeFactors.get(interestRateUnit.lower(), 1) / timeFactors.get(projectionUnit.lower(), 1)
 
-def moduleOne():
-    cls()
-    print('Module 1: Compare Simple and Compound Interest Accounts \n' \
-        '\nSimple interest account:\n')
-    siPrincipleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 1)
-    siInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
-    siInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
-                                           '\n>> Please enter a valid time unit',
-                                           'x', 0, 0)
-    
-    print('\nCompound interest account: \n')
+def createCompoundAccount():
     ciPrincipleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 0)
     ciInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
     ciInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
@@ -100,6 +90,22 @@ def moduleOne():
                       'week': 52}
 
         ciCompoundingTimeUnit = ciCompoundingMap.get(ciCompoundingTimeUnit.lower(), 0)
+
+    return ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit
+
+def moduleOne():
+    cls()
+    print('Module 1: Compare Simple and Compound Interest Accounts \n' \
+        '\nSimple interest account:\n')
+    siPrincipleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 1)
+    siInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
+    siInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
+                                           '\n>> Please enter a valid time unit',
+                                           'x', 0, 0)
+    
+    print('\nCompound interest account: \n')
+
+    ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
     
     print('\nFuture projecting timeframe\n')
     timeIntoFuture = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the amount of time to project into the future: ', 'x', 0)
@@ -138,26 +144,8 @@ def moduleOne():
 def moduleTwo():
     cls()
     print('Module 2: Time for a Compound Interest account to reach a target amount. \n')
-    ciPrincipleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 0)
-    ciInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
-    ciInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
-                                           '\n>> Please enter a valid time unit',
-                                           'x', 0, 0)
-    ciCompoundingTimeUnit = checkTimeFormat('Enter the compounding period time unit (year, quarter, month, week, day, custom): ', 
-                                           '\n>> Please enter a valid time unit',
-                                           'x', 0, 1)
-    
-    if ciCompoundingTimeUnit.lower() == 'custom':
-        ciCompoundingTimeUnit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0)
-    else:
-        ciCompoundingMap = {
-                      'day': 1,
-                      'year': 1,
-                      'quarter': 4,
-                      'month': 12,
-                      'week': 52}
 
-        ciCompoundingTimeUnit = ciCompoundingMap.get(ciCompoundingTimeUnit.lower(), 0)
+    ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
     
     targetAmount = checkInt('x', 'x', '>> Please enter a valid amount', 'Enter the target amount: ', 'x', 0)
 
@@ -248,7 +236,7 @@ def moduleThree():
 
     if compareType == 1:
         compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($)', 'x', 0)
-        compare = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day)')
+        compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
     elif compareType == 2:
         pass
     else:
