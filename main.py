@@ -116,19 +116,19 @@ def moduleOne():
     ciInterestEarned = ciProjectedAmount - ciPrincipleAmount
     
     cls()
+    
     print(
+        'Summary:\n'
+        '- Simple Interest\n'
+        f'  > Principle Amount: {siPrincipleAmount}\n'
+        f'  > Interest Rate: {siInterestRate}% per {siInterestRateTimeUnit}\n'
+        '- Compound Interest:\n'
+        f'  > Principle Amount: {ciPrincipleAmount}\n'
+        f'  > Interest Rate: {ciInterestRate}% per {ciInterestRateTimeUnit}\n'
+        f'  > Compounding Frequency: {ciCompoundingTimeUnit}\n'
+        f'- Projection Timeframe: {timeIntoFuture} {projectionUnit}s'
 
-f'Summary:\n \
-- Simple Interest:\n \
-  > Principle Amount: {siPrincipleAmount}\n \
-  > Interest Rate: {siInterestRate}% per {siInterestRateTimeUnit}\n \
-- Compound Interest:\n \
-  > Principle Amount: {ciPrincipleAmount}\n \
-  > Interest Rate: {ciInterestRate}% per {ciInterestRateTimeUnit}\n \
-  > Compounding Frequency: {ciCompoundingTimeUnit}\n \
-- Projection Timeframe: {timeIntoFuture} {projectionUnit}s'            
-         
-         )
+    )
     
     print(
         f'\nSI Account projected amount: ${siProjectedAmount:.2f}, Interest earned: ${siInterestEarned:.2f}\n'
@@ -162,22 +162,33 @@ def moduleTwo():
     targetAmount = checkInt('x', 'x', '>> Please enter a valid amount', 'Enter the target amount: ', 'x', 0)
 
     time = 0
+    timeProjections = []
 
     # Calculate amount at each time step until target amount is reached
     while True:
         amount = ciPrincipleAmount * (1 + ciInterestRate / 100 / ciCompoundingTimeUnit) ** (ciCompoundingTimeUnit * time)
+
+        timeProjections.append(amount)
 
         if amount >= targetAmount:
             break
 
         time += 1
 
-    print(f"It will take approximately {time} {ciInterestRateTimeUnit}s to reach the target amount of ${targetAmount}.")
-    
+    cls()
+
+    print(f'It will take approximately {time} {ciInterestRateTimeUnit}s to reach the target amount of ${targetAmount}.\n\n')
+    print('Individual values over time:')
+    print('-'*30)
+
+    cycle = 0
+    for i in timeProjections:
+        cycle += 1
+        print(f'{ciInterestRateTimeUnit} {cycle}: {i}')
+
+    print('\n Summary:')
 
 
-    
-    
 
 def moduleThree():
     pass
