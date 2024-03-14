@@ -7,7 +7,7 @@ def cls():
 
 cls()
 
-def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clearPrior: int, float: int):
+def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clearPrior: int, floatType: int):
     # set lowVal and highVal, or priorMsg to 'x' if they arent needed
     # set clearPrior to 0 if clearing output is not necessary, or 1 if it is.
     # set float to 0 if you want to use an int, set it to 1 if it should be a float.
@@ -15,17 +15,17 @@ def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clear
         print(priorMsg)
     answer = input(question)
     try:
-        if float == 0:
-            answer = float(answer)
-        elif float == 1:
+        if floatType == 0:
             answer = int(answer)
+        elif floatType == 1:
+            answer = float(answer)
         else:
             raise Exception("Need to enter either 0 or 1")
     except:
         if clearPrior == 1:
             cls()
         print(f'{errorMsg}\n')
-        return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior, float)
+        return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior, floatType)
     else:
         if lowVal == 'x':
             return answer
@@ -36,7 +36,7 @@ def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clear
                 if clearPrior == 1:
                     cls()
                 print(f'{errorMsg}\n')
-                return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior, float)
+                return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior, floatType)
             
 def checkTimeFormat(question: str, errorMsg: str, priorMsg: str, clearPrior: int, customOption: int):
     # set clearPrior to 0 if clearing output is not necessary, or 1 if it is.
