@@ -191,16 +191,27 @@ def moduleThree():
 
     ciPrincipleAmount1, ciInterestRate1, ciInterestRateTimeUnit1, ciCompoundingTimeUnit1 = createCompoundAccount()
 
+    print('\nCompound interest account 2:\n')
+
     ciPrincipleAmount2, ciInterestRate2, ciInterestRateTimeUnit2, ciCompoundingTimeUnit2 = createCompoundAccount()
 
     
 
     print('\nCompare Options: \n')
-    compareType = checkInt('0', '3', '>> Please enter a valid option', 'Would you like to compare the accounts:\n  - Up to a certain $ value (1)\n  - For a specified amount of time (2)\n\nSelect option: ', 'x', 0)
+    compareType = checkInt(0, 3, '>> Please enter a valid option', 'Would you like to compare the accounts:\n  - Up to a certain $ value (1)\n  - For a specified amount of time (2)\n\nSelect option: ', 'x', 0)
 
     if compareType == 1:
-        compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($)', 'x', 0)
+        compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($): ', 'x', 0)
         compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
+
+        ciCompoundingMap = {
+                      'day': 1,
+                      'year': 1,
+                      'quarter': 4,
+                      'month': 12,
+                      'week': 52}
+
+        compareTimeUnit = ciCompoundingMap.get(compareTimeUnit.lower(), 0)
 
         time1 = 0
         time2 = 0
