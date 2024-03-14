@@ -1,5 +1,6 @@
 import os
 import sys
+import math
 
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
@@ -135,6 +136,7 @@ f'Summary:\n \
     )
 
 def moduleTwo():
+    cls()
     print('Module 2: Time for a Compound Interest account to reach a target amount. \n')
     ciPrincipleAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 0)
     ciInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
@@ -148,7 +150,7 @@ def moduleTwo():
     if ciCompoundingTimeUnit.lower() == 'custom':
         ciCompoundingTimeUnit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0)
     else:
-        ciCompoundingMap = {'custom': checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0),
+        ciCompoundingMap = {
                       'day': 1,
                       'year': 1,
                       'quarter': 4,
@@ -156,6 +158,25 @@ def moduleTwo():
                       'week': 52}
 
         ciCompoundingTimeUnit = ciCompoundingMap.get(ciCompoundingTimeUnit.lower(), 0)
+    
+    targetAmount = checkInt('x', 'x', '>> Please enter a valid amount', 'Enter the target amount: ', 'x', 0)
+
+    time = 0
+
+    # Calculate amount at each time step until target amount is reached
+    while True:
+        amount = ciPrincipleAmount * (1 + ciInterestRate / 100 / ciCompoundingTimeUnit) ** (ciCompoundingTimeUnit * time)
+
+        if amount >= targetAmount:
+            break
+
+        time += 1
+
+    print(f"It will take approximately {time} {ciInterestRateTimeUnit}s to reach the target amount of ${targetAmount}.")
+    
+
+
+    
     
 
 def moduleThree():
@@ -178,6 +199,6 @@ module_functions = {
     4: moduleFour,
     5: moduleFive,
     6: exitProgram
-}
+}   
     
 menuBar()
