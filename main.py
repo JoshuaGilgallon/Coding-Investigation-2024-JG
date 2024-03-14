@@ -141,6 +141,9 @@ def moduleOne():
         f'CI Account projected amount: ${ciProjectedAmount:.2f}, Interest earned: ${ciInterestEarned:.2f}'
     )
 
+    input('Press enter to return to menu')
+    menuBar()
+
 def moduleTwo():
     cls()
     print('Module 2: Time for a Compound Interest account to reach a target amount. \n')
@@ -184,6 +187,9 @@ def moduleTwo():
         cycle += 1
         print(f'{ciInterestRateTimeUnit.capitalize()} {cycle}: {i:.2f}')
 
+    input('Press enter to return to menu')
+    menuBar()
+
 def moduleThree():
     cls()
     print('Module 3: Compare Two Compound Interest Accounts \n' \
@@ -200,16 +206,16 @@ def moduleThree():
     print('\nCompare Options: \n')
     compareType = checkInt(0, 3, '>> Please enter a valid option', 'Would you like to compare the accounts:\n  - Up to a certain $ value (1)\n  - For a specified amount of time (2)\n\nSelect option: ', 'x', 0)
 
-    if compareType == 1:
-        compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($): ', 'x', 0)
-        compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
-
-        ciCompoundingMap = {
+    ciCompoundingMap = {
                       'day': 1,
                       'year': 1,
                       'quarter': 4,
                       'month': 12,
                       'week': 52}
+
+    if compareType == 1:
+        compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($): ', 'x', 1)
+        compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
 
         compareTimeUnit = ciCompoundingMap.get(compareTimeUnit.lower(), 0)
 
@@ -261,12 +267,19 @@ def moduleThree():
             index += 1
 
     elif compareType == 2:
-        pass
+        compareTimeAmount = checkInt('x', 'x', '>> Please enter a valid number', 'How much time to predict for (unit will be asked next): ', 'x', 1)
+        compareTimeAmountUnit = checkTimeFormat('What time unit (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
+
+        compareTimeUnit = ciCompoundingMap.get(compareTimeUnit.lower(), 0)
+
+
+
     else:
         raise Exception("Value isn't between specified numbers")
         # raise an error if the compareType chekInt function fails and assigns a number that is not 1 or 2.
     
-
+    input('Press enter to return to menu')
+    menuBar()
 
 def moduleFour():
     pass
