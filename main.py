@@ -188,48 +188,12 @@ def moduleThree():
     cls()
     print('Module 3: Compare Two Compound Interest Accounts \n' \
         '\nCompound interest account 1:\n')
-    ciPrincipleAmount1 = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 0)
-    ciInterestRate1 = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
-    ciInterestRateTimeUnit1 = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
-                                           '\n>> Please enter a valid time unit',
-                                           'x', 0, 0)
-    ciCompoundingTimeUnit1 = checkTimeFormat('Enter the compounding period time unit (year, quarter, month, week, day, custom): ', 
-                                           '\n>> Please enter a valid time unit',
-                                           'x', 0, 1)
-    
-    if ciCompoundingTimeUnit1.lower() == 'custom':
-        ciCompoundingTimeUnit1 = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0)
-    else:
-        ciCompoundingMap1 = {
-                      'day': 1,
-                      'year': 1,
-                      'quarter': 4,
-                      'month': 12,
-                      'week': 52}
 
-        ciCompoundingTimeUnit1 = ciCompoundingMap1.get(ciCompoundingTimeUnit1.lower(), 0)
-    
-    print('\nCompound interest account 2: \n')
-    ciPrincipleAmount2 = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the principle amount (in $): ', 'x', 0)
-    ciInterestRate2 = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', 0)
-    ciInterestRateTimeUnit2 = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
-                                           '\n>> Please enter a valid time unit',
-                                           'x', 0, 0)
-    ciCompoundingTimeUnit2 = checkTimeFormat('Enter the compounding period time unit (year, quarter, month, week, day, custom): ', 
-                                           '\n>> Please enter a valid time unit',
-                                           'x', 0, 1)
-    
-    if ciCompoundingTimeUnit2.lower() == 'custom':
-        ciCompoundingTimeUnit2 = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', 0)
-    else:
-        ciCompoundingMap2 = {
-                      'day': 1,
-                      'year': 1,
-                      'quarter': 4,
-                      'month': 12,
-                      'week': 52}
+    ciPrincipleAmount1, ciInterestRate1, ciInterestRateTimeUnit1, ciCompoundingTimeUnit1 = createCompoundAccount()
 
-        ciCompoundingTimeUnit2 = ciCompoundingMap2.get(ciCompoundingTimeUnit2.lower(), 0)
+    ciPrincipleAmount2, ciInterestRate2, ciInterestRateTimeUnit2, ciCompoundingTimeUnit2 = createCompoundAccount()
+
+    
 
     print('\nCompare Options: \n')
     compareType = checkInt('0', '3', '>> Please enter a valid option', 'Would you like to compare the accounts:\n  - Up to a certain $ value (1)\n  - For a specified amount of time (2)\n\nSelect option: ', 'x', 0)
@@ -237,17 +201,49 @@ def moduleThree():
     if compareType == 1:
         compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($)', 'x', 0)
         compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
+
+        time1 = 0
+        time2 = 0
+        timeProjectionsAcc1 = []
+        timeProjectionsAcc2 = []
+
+        while True:
+            amountAcc1 = ciPrincipleAmount1 * (1 + ciInterestRate1 / 100 / compareTimeUnit) ** (compareTimeUnit * time1)
+
+            timeProjectionsAcc1.append(amountAcc1)
+
+            if amountAcc1 >= compareFinalValue:
+                break
+
+            time1 += 1
+
+        while True:
+            amountAcc2 = ciPrincipleAmount2 * (1 + ciInterestRate2 / 100 / compareTimeUnit) ** (compareTimeUnit * time2)
+
+            timeProjectionsAcc2.append(amountAcc1)
+
+            if amountAcc2 >= compareFinalValue:
+                break
+
+            time2 += 1
+
+        index = 0
+        cycle = 0
+        print('A1 = Account 1 and A2 = Account 2\n')
+        for i in timeProjectionsAcc1:
+            cycle += 1
+
+            print(f'{ciInterestRateTimeUnit1.capitalize()} {cycle}: A1: {i:.2f}, A2: {timeProjectionsAcc2[index]:.2f}')
+
+            index += 1
+
     elif compareType == 2:
         pass
     else:
         raise Exception("Value isn't between specified numbers")
         # raise an error if the compareType chekInt function fails and assigns a number that is not 1 or 2.
-
-    
-    
     
 
-    
 
 def moduleFour():
     pass
