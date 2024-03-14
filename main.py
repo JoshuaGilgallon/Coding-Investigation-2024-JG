@@ -231,7 +231,7 @@ def moduleThree():
         while True:
             amountAcc2 = ciPrincipleAmount2 * (1 + ciInterestRate2 / 100 / compareTimeUnit) ** (compareTimeUnit * time2)
 
-            timeProjectionsAcc2.append(amountAcc1)
+            timeProjectionsAcc2.append(amountAcc2)
 
             if amountAcc2 >= compareFinalValue:
                 break
@@ -240,11 +240,23 @@ def moduleThree():
 
         index = 0
         cycle = 0
+        p2Print = ''
         print('A1 = Account 1 and A2 = Account 2\n')
         for i in timeProjectionsAcc1:
             cycle += 1
 
-            print(f'{ciInterestRateTimeUnit1.capitalize()} {cycle}: A1: {i:.2f}, A2: {timeProjectionsAcc2[index]:.2f}')
+            if i > compareFinalValue:
+                p1Print = 'Target Reached'
+            else:
+                p1Print = round(i, 2)
+            
+            if p2Print != 'Target Reached':
+                if timeProjectionsAcc2[index] > compareFinalValue:
+                    p2Print = 'Target Reached'
+                else:
+                    p2Print = round(timeProjectionsAcc2[index], 2)
+
+            print(f'{ciInterestRateTimeUnit1.capitalize()} {cycle}: A1: {p1Print}, A2: {p2Print}')
 
             index += 1
 
