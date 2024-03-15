@@ -9,7 +9,6 @@ cls()
 
 def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clearPrior: bool, isFloat: bool):
     # set lowVal and highVal, or priorMsg to 'x' if they arent needed
-    # set clearPrior to 0 if clearing output is not necessary, or 1 if it is.
     if priorMsg != 'x':
         print(priorMsg)
     answer = input(question)
@@ -35,17 +34,15 @@ def checkInt(lowVal, highVal, errorMsg: str, question: str, priorMsg: str, clear
                 print(f'{errorMsg}\n')
                 return checkInt(lowVal, highVal, errorMsg, question, priorMsg, clearPrior, isFloat)
             
-def checkTimeFormat(question: str, errorMsg: str, priorMsg: str, clearPrior: int, customOption: int):
-    # set clearPrior to 0 if clearing output is not necessary, or 1 if it is.
-    # set customOption to 1 if it is required, otherwise 0.
+def checkTimeFormat(question: str, errorMsg: str, priorMsg: str, clearPrior: bool, customOption: bool):
     validTimes = ['year', 'quarter', 'month', 'week', 'day']
-    if customOption == 1:
+    if customOption:
         validTimes.append('custom')
     timeFormat = input(question).lower()
     if timeFormat in validTimes:
         return timeFormat
     else:
-        if clearPrior == 1:
+        if clearPrior:
             cls()
         print(f'{errorMsg}\n')
         return checkTimeFormat(question, errorMsg, priorMsg, clearPrior, customOption)
@@ -78,10 +75,10 @@ def createCompoundAccount():
     ciInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', False, True)
     ciInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
                                            '\n>> Please enter a valid time unit',
-                                           'x', 0, 0)
+                                           'x', False, False)
     ciCompoundingTimeUnit = checkTimeFormat('Enter the compounding period time unit (year, quarter, month, week, day, custom): ', 
                                            '\n>> Please enter a valid time unit',
-                                           'x', 0, 1)
+                                           'x', False, True)
     
     if ciCompoundingTimeUnit.lower() == 'custom':
         ciCompoundingTimeUnit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', False, False)
@@ -105,7 +102,7 @@ def moduleOne():
     siInterestRate = checkInt('x', 'x', '>> Please enter a valid number', f'Enter the interest rate (Enter 7% as 7): ', 'x', False, True)
     siInterestRateTimeUnit = checkTimeFormat('Enter the interest rate time unit (year, quarter, month, week, day): ', 
                                            '\n>> Please enter a valid time unit',
-                                           'x', 0, 0)
+                                           'x', False, False)
     
     print('\nCompound interest account: \n')
 
@@ -113,7 +110,7 @@ def moduleOne():
     
     print('\nFuture projecting timeframe\n')
     timeIntoFuture = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the amount of time to project into the future: ', 'x', False, False)
-    projectionUnit = checkTimeFormat('Enter the projection time unit (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
+    projectionUnit = checkTimeFormat('Enter the projection time unit (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', False, False)
 
     # Adjustments based on time units for both simple and compound interest calculations
     siTimeFactor = getTimeFactor(siInterestRateTimeUnit, projectionUnit)
@@ -219,7 +216,7 @@ def moduleThree():
 
     if compareType == 1:
         compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($): ', 'x', True, True)
-        compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', 0, 0)
+        compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', False, False)
 
         compareTimeUnit = ciCompoundingMap.get(compareTimeUnit.lower(), 0)
 
