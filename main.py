@@ -354,7 +354,13 @@ def moduleFive():
     monthlyDeposit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the monthly deposit amount (in $): ', 'x', False, True)
     savingsDuration = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the savings duration (in years): ', 'x', False, False)
 
-    
+    totalInitialGift = initialGift * (1 + ciInterestRate / 100) ** (ciCompoundingTimeUnit * savingsDuration)
+    totalContributions = monthlyDeposit * 12 * savingsDuration
+    totalAmount = totalInitialGift + totalContributions
+
+    cls()
+
+
 
 
 def exitProgram():
