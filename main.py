@@ -303,6 +303,12 @@ def moduleThree():
     input('Press enter to return to menu')
     menuBar()
 
+def calculateAmountOwed(principal, interestRate, compoundingFrequency, duration):
+    totalAmount = principal
+    for _ in range(duration * compoundingFrequency):
+        totalAmount *= 1 + (interestRate / 100) / compoundingFrequency
+    return totalAmount
+
 def moduleFour():
     cls()
     print('Module 4: Model a CI savings account with regular deposits\n')
@@ -339,7 +345,17 @@ def moduleFour():
     menuBar()
 
 def moduleFive():
-    pass
+    cls()
+    print('Module 5: Simulate Increases in Compounding Frequency\n')
+
+    ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
+
+    initialGift = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the initial gift amount (in $): ', 'x', True, True)
+    monthlyDeposit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the monthly deposit amount (in $): ', 'x', False, True)
+    savingsDuration = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the savings duration (in years): ', 'x', False, False)
+
+    
+
 
 def exitProgram():
     cls()
