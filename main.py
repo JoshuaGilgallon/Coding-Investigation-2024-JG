@@ -313,7 +313,8 @@ def moduleFour():
     monthlyDeposit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the monthly deposit amount (in $): ', 'x', False, True)
     savingsDuration = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the savings duration (in years): ', 'x', False, False)
 
-    totalAmount = initialGift
+    # Calculate the future value with regular deposits
+    totalAmount = ciPrincipleAmount  # Using ciPrincipleAmount instead of initialGift
     for month in range(savingsDuration * 12):
         totalAmount += monthlyDeposit
         totalAmount *= (1 + ciInterestRate / 100 / ciCompoundingTimeUnit)
@@ -324,6 +325,21 @@ def moduleFour():
     print(f'compounded at an interest rate of {ciInterestRate}% per {ciInterestRateTimeUnit},')
     print(f'you will have a total of ${totalAmount:.2f} after {savingsDuration} years.')
 
+    targetAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the target amount for buying the car (in $): ', 'x', False, True)
+
+    if totalAmount >= targetAmount:
+        print(f'\nCongratulations! You will have enough money (${totalAmount:.2f}) to buy your car!')
+    else:
+        print(f'\nUnfortunately, you will not have enough money (${totalAmount:.2f}) to buy your car.')
+
+        # Calculate the minimum monthly deposit needed to reach the target amount
+        remainingMonths = savingsDuration * 12
+        minMonthlyDeposit = (targetAmount - initialGift) / ((1 + ciInterestRate / 100 / ciCompoundingTimeUnit) ** remainingMonths - 1)
+
+        print(f'You would need to deposit at least ${minMonthlyDeposit:.2f} per month to just manage to reach your target of ${targetAmount}.')
+
+    input('\nPress enter to return to menu')
+    menuBar()
 
 def moduleFive():
     pass
