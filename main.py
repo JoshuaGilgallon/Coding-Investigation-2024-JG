@@ -318,6 +318,13 @@ def moduleFour():
         totalAmount += monthlyDeposit
         totalAmount *= (1 + ciInterestRate / 100 / ciCompoundingTimeUnit)
 
+    cls()
+
+    print(f'With an initial gift of ${initialGift}, and a monthly deposit of ${monthlyDeposit},')
+    print(f'compounded at an interest rate of {ciInterestRate}% per {ciInterestRateTimeUnit},')
+    print(f'you will have a total of ${totalAmount:.2f} after {savingsDuration} years.')
+
+
 def moduleFive():
     pass
 
