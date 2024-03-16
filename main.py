@@ -304,8 +304,14 @@ def moduleThree():
     menuBar()
 
 def moduleFour():
+    cls()
+    print('Module 4: Model a CI savings account with regular deposits\n')
 
-    pass
+    ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
+
+    initialGift = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the initial gift amount (in $): ', 'x', True, True)
+    monthlyDeposit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the monthly deposit amount (in $): ', 'x', False, True)
+    savingsDuration = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the savings duration (in years): ', 'x', False, False)
 
 def moduleFive():
     pass
