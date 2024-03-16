@@ -296,8 +296,6 @@ def moduleThree():
         for i in range(compareTimeAmount):
             print(f'{compareTimeAmountUnitStr} {i + 1}: A1|{timeProjectionsAcc1[i]:.2f}, A2|{timeProjectionsAcc2[i]:.2f}')
 
-
-
     else:
         raise Exception("Value isn't between specified numbers")
         # raise an error if the compareType chekInt function fails and assigns a number that is not 1 or 2.
