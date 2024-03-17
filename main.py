@@ -153,23 +153,31 @@ def moduleTwo():
     
     targetAmount = checkInt('x', 'x', '>> Please enter a valid amount', 'Enter the target amount: ', 'x', False, True)
 
-    time = 0
+    numYears = 0
+
     timeProjections = []
 
-    # Calculate amount at each time step until target amount is reached
+    ciCompoundingMap = {
+                      'day': 365,
+                      'year': 1,
+                      'quarter': 4,
+                      'month': 12,
+                      'week': 52}
+
     while True:
-        amount = ciPrincipleAmount * (1 + ciInterestRate / 100 / ciCompoundingTimeUnit) ** (ciCompoundingTimeUnit * time)
+        amount = ciPrincipleAmount * (1 + ciInterestRate / 100 / ciCompoundingTimeUnit) ** (ciCompoundingTimeUnit * numYears)
+
 
         timeProjections.append(amount)
 
         if amount >= targetAmount:
             break
 
-        time += 1
+        numYears += 1
 
     cls()
 
-    print(f'It will take approximately {time} {ciInterestRateTimeUnit}s to reach the target amount of ${targetAmount}.\n\n')
+    print(f'It will take approximately {numYears} {ciInterestRateTimeUnit}s to reach the target amount of ${targetAmount}.\n\n')
 
     print(
         'Summary:\n'
@@ -180,7 +188,9 @@ def moduleTwo():
         f'  > Target Amount: {targetAmount}\n'
     )
 
-    print('Individual values over time:')
+    input('Press enter to view the individual values over time')
+
+    print('\n\nIndividual values over time:')
     print('-'*30)
 
     cycle = 0
@@ -190,6 +200,8 @@ def moduleTwo():
 
     input('Press enter to return to menu')
     menuBar()
+
+    
 
 def moduleThree():
     cls()
@@ -202,13 +214,11 @@ def moduleThree():
 
     ciPrincipleAmount2, ciInterestRate2, ciInterestRateTimeUnit2, ciCompoundingTimeUnit2 = createCompoundAccount()
 
-    
-
     print('\nCompare Options: \n')
     compareType = checkInt(0, 3, '>> Please enter a valid option', 'Would you like to compare the accounts:\n  - Up to a certain $ value (1)\n  - For a specified amount of time (2)\n\nSelect option: ', 'x', False, False)
 
     ciCompoundingMap = {
-                      'day': 1,
+                      'day': 365,  # Daily compounding
                       'year': 1,
                       'quarter': 4,
                       'month': 12,
@@ -218,17 +228,15 @@ def moduleThree():
         compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($): ', 'x', True, True)
         compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', False, False)
 
-        compareTimeUnit = ciCompoundingMap.get(compareTimeUnit.lower(), 0)
+        compareTimeUnit = ciCompoundingMap.get(compareTimeUnit.lower(), 1)  # Default to annual compounding if invalid unit provided
 
         time1 = 0
         time2 = 0
-        
+        timeProjectionsAcc1 = []  # Initialize lists outside the loops
+        timeProjectionsAcc2 = []
 
         while True:
             amountAcc1 = ciPrincipleAmount1 * (1 + ciInterestRate1 / 100 / compareTimeUnit) ** (compareTimeUnit * time1)
-
-            timeProjectionsAcc1 = []
-            timeProjectionsAcc2 = []
 
             timeProjectionsAcc1.append(amountAcc1)
 
@@ -249,27 +257,20 @@ def moduleThree():
 
         index = 0
         cycle = 0
-        p2Print = ''
         print('\nComparison over time:')
         print('A1 = Account 1 and A2 = Account 2')
         print('-' * 30)
         for i in timeProjectionsAcc1:
             cycle += 1
 
-            if i > compareFinalValue:
-                p1Print = 'Target Reached'
-            else:
-                p1Print = round(i, 2)
+            p1Print = 'Target Reached' if i >= compareFinalValue else round(i, 2)
             
-            if p2Print != 'Target Reached':
-                if timeProjectionsAcc2[index] > compareFinalValue:
-                    p2Print = 'Target Reached'
-                else:
-                    p2Print = round(timeProjectionsAcc2[index], 2)
+            p2Print = 'Target Reached' if timeProjectionsAcc2[index] >= compareFinalValue else round(timeProjectionsAcc2[index], 2)
 
             print(f'{ciInterestRateTimeUnit1.capitalize()} {cycle}: A1: {p1Print}, A2: {p2Print}')
 
             index += 1
+
 
     elif compareType == 2:
         cls()
@@ -303,6 +304,9 @@ def moduleThree():
     input('Press enter to return to menu')
     menuBar()
 
+    # Incorrect calculations
+
+
 def calculateAmountOwed(principal, interestRate, compoundingFrequency, duration):
     totalAmount = principal
     for _ in range(duration * compoundingFrequency):
@@ -311,56 +315,73 @@ def calculateAmountOwed(principal, interestRate, compoundingFrequency, duration)
 
 def moduleFour():
     cls()
-    print('Module 4: Model a CI savings account with regular deposits\n')
+    print('Module 4: Compound Interest account with regular deposits\n')
 
     ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
 
-    initialGift = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the initial gift amount (in $): ', 'x', True, True)
-    monthlyDeposit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the monthly deposit amount (in $): ', 'x', False, True)
-    savingsDuration = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the savings duration (in years): ', 'x', False, False)
+    monthlyDeposit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the regular deposit amount per compounding period (in $): ', 'x', False, True)
 
-    totalInitialGift = initialGift * (1 + ciInterestRate / 100) ** (ciCompoundingTimeUnit * savingsDuration)
-    totalContributions = monthlyDeposit * 12 * savingsDuration
-    totalAmount = totalInitialGift + totalContributions
+    projectionAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the dollar amount to project to (if you enter 0, you will be asked for the amount of time to project for): ', 'x', False, True)
+
+    if projectionAmount == 0:
+        savingsDuration = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the amount of time to project for (in years): ', 'x', False, False)
+        projectionUnit = checkTimeFormat('Enter the projection time unit (year, quarter, month, week, day, custom): ', '>> Please enter a valid time unit', 'x', False, True)
+    else:
+        savingsDuration = 0
+        projectionUnit = ''
+
+    if projectionAmount == 0:
+        totalAmount = ciPrincipleAmount
+        for _ in range(savingsDuration * ciCompoundingTimeUnit):
+            totalAmount *= 1 + (ciInterestRate / 100) / ciCompoundingTimeUnit
+            totalAmount += monthlyDeposit
+    else:
+        totalAmount = projectionAmount
 
     cls()
 
-    print(f'With an initial gift of ${initialGift}, and a monthly deposit of ${monthlyDeposit},')
+    print(f'With an initial amount of ${ciPrincipleAmount}, and a regular deposit of ${monthlyDeposit} per {ciInterestRateTimeUnit},')
     print(f'compounded at an interest rate of {ciInterestRate}% per {ciInterestRateTimeUnit},')
-    print(f'you will have a total of ${totalAmount:.2f} after {savingsDuration} years.')
-
-    targetAmount = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the target amount for buying the car (in $): ', 'x', False, True)
-
-    if totalAmount >= targetAmount:
-        print(f'\nCongratulations! You will have enough money (${totalAmount:.2f}) to buy your car!')
-    else:
-        print(f'\nUnfortunately, you will not have enough money (${totalAmount:.2f}) to buy your car.')
-
-        remainingMonths = savingsDuration * 12
-        minMonthlyDeposit = (targetAmount - totalInitialGift) / (12 * remainingMonths)
-
-        print(f'You would need to deposit at least ${minMonthlyDeposit:.2f} per month to just manage to reach your target of ${targetAmount}.')
+    print(f'you will have a total of ${totalAmount:.2f} after {savingsDuration} {projectionUnit}s.')
 
     input('\nPress enter to return to menu')
     menuBar()
 
-def moduleFive():
-    cls()
-    print('Module 5: Simulate Increases in Compounding Frequency\n')
+# def moduleFive():
+    # cls()
+    # print('Module 5: Simulate Increases in Compounding Frequency\n')
 
-    ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
+    # ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
 
-    initialGift = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the initial gift amount (in $): ', 'x', True, True)
-    monthlyDeposit = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the monthly deposit amount (in $): ', 'x', False, True)
-    savingsDuration = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the savings duration (in years): ', 'x', False, False)
+    # timeAmount = checkInt('x', 'x', '>> Please enter a valid number', 'How much time would you like to predict for (unit will be asked next)')
 
-    totalInitialGift = initialGift * (1 + ciInterestRate / 100) ** (ciCompoundingTimeUnit * savingsDuration)
-    totalContributions = monthlyDeposit * 12 * savingsDuration
-    totalAmount = totalInitialGift + totalContributions
+    # # just module 3 but with hourly and 10 minutely etc.
 
-    cls()
+    # cls()
 
+    # print(f'With an initial amount of ${ciPrincipleAmount}, and a monthly deposit of ${monthlyDeposit},')
+    # print(f'compounded at an interest rate of {ciInterestRate}% per {ciInterestRateTimeUnit},')
+    # print(f'you will have a total of ${totalAmount:.2f} after {savingsDuration} years.\n')
 
+    # compoundingOptions = ['quarterly', 'weekly', 'daily', 'hourly', 'ten-minute']
+
+    # for frequency in compoundingOptions:
+    #     if frequency == 'quarterly':
+    #         compoundingFrequency = 4
+    #     elif frequency == 'weekly':
+    #         compoundingFrequency = 52
+    #     elif frequency == 'daily':
+    #         compoundingFrequency = 365
+    #     elif frequency == 'hourly':
+    #         compoundingFrequency = 365 * 24
+    #     elif frequency == 'ten-minute':
+    #         compoundingFrequency = 365 * 24 * 6
+
+    #     amountOwed = calculateAmountOwed(totalAmount, ciInterestRate, compoundingFrequency, savingsDuration)
+    #     print(f'With compounding frequency of {frequency}, the amount owed at the end of the year is ${amountOwed:.2f}')
+
+    # input('\nPress enter to return to menu')
+    # menuBar()
 
 
 def exitProgram():
@@ -373,7 +394,7 @@ module_functions = {
     2: moduleTwo,
     3: moduleThree,
     4: moduleFour,
-    5: moduleFive,
+    # 5: moduleFive,
     6: exitProgram
 }   
     
