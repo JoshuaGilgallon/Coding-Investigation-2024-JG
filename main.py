@@ -218,7 +218,7 @@ def moduleThree():
     compareType = checkInt(0, 3, '>> Please enter a valid option', 'Would you like to compare the accounts:\n  - Up to a certain $ value (1)\n  - For a specified amount of time (2)\n\nSelect option: ', 'x', False, False)
 
     ciCompoundingMap = {
-                      'day': 365,  # Daily compounding
+                      'day': 365,
                       'year': 1,
                       'quarter': 4,
                       'month': 12,
@@ -228,11 +228,9 @@ def moduleThree():
         compareFinalValue = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the value to compare the two accounts up to ($): ', 'x', True, True)
         compareTimeUnit = checkTimeFormat('What time unit should the projections increment in (year, quarter, month, week, day): ', '>> Please enter a valid time unit', 'x', False, False)
 
-        compareTimeUnit = ciCompoundingMap.get(compareTimeUnit.lower(), 1)  # Default to annual compounding if invalid unit provided
-
         time1 = 0
         time2 = 0
-        timeProjectionsAcc1 = []  # Initialize lists outside the loops
+        timeProjectionsAcc1 = []
         timeProjectionsAcc2 = []
 
         while True:
@@ -299,12 +297,9 @@ def moduleThree():
 
     else:
         raise Exception("Value isn't between specified numbers")
-        # raise an error if the compareType chekInt function fails and assigns a number that is not 1 or 2.
     
     input('Press enter to return to menu')
     menuBar()
-
-    # Incorrect calculations
 
 
 def calculateAmountOwed(principal, interestRate, compoundingFrequency, duration):
@@ -347,41 +342,42 @@ def moduleFour():
     input('\nPress enter to return to menu')
     menuBar()
 
-# def moduleFive():
-    # cls()
-    # print('Module 5: Simulate Increases in Compounding Frequency\n')
+def moduleFive():
+    cls()
+    print('Module 5: Simulate Increases in Compounding Frequency\n')
 
-    # ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
+    ciPrincipleAmount, ciInterestRate, ciInterestRateTimeUnit, ciCompoundingTimeUnit = createCompoundAccount()
 
-    # timeAmount = checkInt('x', 'x', '>> Please enter a valid number', 'How much time would you like to predict for (unit will be asked next)')
+    timeAmount = checkInt('x', 'x', '>> Please enter a valid number', 'How much time would you like to predict for (unit will be asked next): ', 'x', False, False)
+    
+    projectionUnit = checkTimeFormat('Enter the projection time unit (year, quarter, month, week, day, custom): ', '>> Please enter a valid time unit', 'x', False, True)
 
-    # # just module 3 but with hourly and 10 minutely etc.
+    # Calculate total amount based on the specified time unit
+    if projectionUnit.lower() == 'custom':
+        timeFactor = checkInt('x', 'x', '>> Please enter a valid number', 'Enter the number of compounding periods per interest rate time unit: ', 'x', False, False)
+    else:
+        timeFactors = {
+            'year': 1,
+            'quarter': 4,
+            'month': 12,
+            'week': 52,
+            'day': 365,
+            'hour': 365 * 24,
+            'ten-minute': 365 * 24 * 6
+        }
+        timeFactor = timeFactors.get(projectionUnit.lower(), 1)
 
-    # cls()
+    totalAmount = ciPrincipleAmount
+    for _ in range(timeAmount * timeFactor):
+        totalAmount *= 1 + (ciInterestRate / 100) / timeFactor
 
-    # print(f'With an initial amount of ${ciPrincipleAmount}, and a monthly deposit of ${monthlyDeposit},')
-    # print(f'compounded at an interest rate of {ciInterestRate}% per {ciInterestRateTimeUnit},')
-    # print(f'you will have a total of ${totalAmount:.2f} after {savingsDuration} years.\n')
+    cls()
 
-    # compoundingOptions = ['quarterly', 'weekly', 'daily', 'hourly', 'ten-minute']
+    print(f'With an initial amount of ${ciPrincipleAmount}, compounded at an interest rate of {ciInterestRate}% per {ciInterestRateTimeUnit},')
+    print(f'you will have a total of ${totalAmount:.2f} after {timeAmount} {projectionUnit}s.\n')
 
-    # for frequency in compoundingOptions:
-    #     if frequency == 'quarterly':
-    #         compoundingFrequency = 4
-    #     elif frequency == 'weekly':
-    #         compoundingFrequency = 52
-    #     elif frequency == 'daily':
-    #         compoundingFrequency = 365
-    #     elif frequency == 'hourly':
-    #         compoundingFrequency = 365 * 24
-    #     elif frequency == 'ten-minute':
-    #         compoundingFrequency = 365 * 24 * 6
-
-    #     amountOwed = calculateAmountOwed(totalAmount, ciInterestRate, compoundingFrequency, savingsDuration)
-    #     print(f'With compounding frequency of {frequency}, the amount owed at the end of the year is ${amountOwed:.2f}')
-
-    # input('\nPress enter to return to menu')
-    # menuBar()
+    input('\nPress enter to return to menu')
+    menuBar()
 
 
 def exitProgram():
@@ -394,7 +390,7 @@ module_functions = {
     2: moduleTwo,
     3: moduleThree,
     4: moduleFour,
-    # 5: moduleFive,
+    5: moduleFive,
     6: exitProgram
 }   
     
